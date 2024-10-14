@@ -11,8 +11,9 @@ def parse_equations(file_path):
         for line in file:
             line = line.strip() ## pentru a elimina spatiile
             lhs, rhs = line.split('=') # avem partea st a ecuatiei si partea dr
+            ## 2x + 3y - z si 5
             coeffs = [0, 0, 0]
-            lhs = lhs.replace('-', '+-')
+            lhs = lhs.replace('-', '+-') # pentru a putea da split in functie de +
             
             #pentru partea stanga
             terms = lhs.split('+')
@@ -51,7 +52,7 @@ if __name__ == "__main__":
 
 ###------2------ Matrix and Vector Operations
 
-import math
+import math # pentru radical
 
 # Determinantul unei mat 2x2 sau 3x3
 ## modificata ca sa o pot folosi si la det(minor) care e 2x2
@@ -73,8 +74,9 @@ def trace(A):
 def vector_norm(B):
     return math.sqrt(B[0]**2 + B[1]**2 + B[2]**2)
 
-# Transpunerea unei matrice 3x3
-def transpose(A):
+# Transpusa
+# inversez coloanele cu liniile
+def transpose(A): 
     return [[A[j][i] for j in range(3)] for i in range(3)]
 
 # O matrice 3x3 inmultita cu un vector 
@@ -187,14 +189,14 @@ def inverse_matrix(A):
     # inversa este adjugata / det(A) , cu det A neaparat != 0
     inverse = [[adjugate[i][j] / det_A for j in range(3)] for i in range(3)]
     
-    return inverse
+    return inverse # inversa
 
 def matrix_multiplication(A, B):
     return [
         A[0][0] * B[0] + A[0][1] * B[1] + A[0][2] * B[2],
         A[1][0] * B[0] + A[1][1] * B[1] + A[1][2] * B[2],
         A[2][0] * B[0] + A[2][1] * B[1] + A[2][2] * B[2]
-    ]
+    ] # A * B
 
 if __name__ == "__main__":
     file_path = 'file.txt'
