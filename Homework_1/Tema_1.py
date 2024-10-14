@@ -53,11 +53,17 @@ if __name__ == "__main__":
 
 import math
 
-# Determinantul unei mat 3x3
+# Determinantul unei mat 2x2 sau 3x3
+## modificata ca sa o pot folosi si la det(minor) care e 2x2
 def determinant(A):
-    return (A[0][0] * (A[1][1] * A[2][2] - A[1][2] * A[2][1]) -
-            A[0][1] * (A[1][0] * A[2][2] - A[1][2] * A[2][0]) +
-            A[0][2] * (A[1][0] * A[2][1] - A[1][1] * A[2][0]))
+    if len(A) == 2:  # pt 2x2
+        return A[0][0] * A[1][1] - A[0][1] * A[1][0]
+    elif len(A) == 3:  # pt 3x3
+        return (A[0][0] * (A[1][1] * A[2][2] - A[1][2] * A[2][1]) -
+                A[0][1] * (A[1][0] * A[2][2] - A[1][2] * A[2][0]) +
+                A[0][2] * (A[1][0] * A[2][1] - A[1][1] * A[2][0]))
+    else:
+        raise ValueError("Matricea nu este nici 2x2, nici 3x3")
 
 # sum pe diagonala principala
 def trace(A):
@@ -130,6 +136,66 @@ def cramer(A, B):
     
     return x, y, z
 
+
+"""if __name__ == "__main__":
+    file_path = 'file.txt'
+    A, B = parse_equations(file_path)
+    print("matricea: ")
+    for row in A:
+        print(row)
+    print("\n")
+    print("vectorul: ")
+    print(B)
+    x, y, z = cramer(A, B)
+    print(f"Soluția sistemului: x = {x}, y = {y}, z = {z}")
+    """
+
+# ------4------- Solving using Inversion
+
+# fct pentru minor
+def minor_matrix(A, i, j):
+    return [row[:j] + row[j+1:] for row in (A[:i] + A[i+1:])]
+
+# fct pt cofactor
+def cofactor(A, i, j):
+    minor = minor_matrix(A, i, j)
+    return ((-1) ** (i + j)) * determinant(minor)
+
+# cofactor matrix (−1)i+j × det(Mij )
+
+def cofactor_matrix(A):
+    cofactor_mat = []
+    for i in range(3):
+        row = []
+        for j in range(3):
+            row.append(cofactor(A, i, j))
+        cofactor_mat.append(row)
+    return cofactor_mat
+
+#inversam matricea
+def inverse_matrix(A):
+    det_A = determinant(A)
+    
+    if det_A == 0:
+        raise ValueError("det lui A este 0")
+    
+    cofactor_mat = cofactor_matrix(A)
+    
+    # transpusa cofactorilor = adjugata
+    adjugate = transpose(cofactor_mat)
+    
+    # inversa este adjugata / det(A) , cu det A neaparat != 0
+    inverse = [[adjugate[i][j] / det_A for j in range(3)] for i in range(3)]
+    
+    return inverse
+
+def matrix_multiplication(A, B):
+    return [
+        A[0][0] * B[0] + A[0][1] * B[1] + A[0][2] * B[2],
+        A[1][0] * B[0] + A[1][1] * B[1] + A[1][2] * B[2],
+        A[2][0] * B[0] + A[2][1] * B[1] + A[2][2] * B[2]
+    ]
+
 if __name__ == "__main__":
     file_path = 'file.txt'
     A, B = parse_equations(file_path)
@@ -140,9 +206,17 @@ if __name__ == "__main__":
     print("vectorul: ")
     print(B)
     
-    try:
-        x, y, z = cramer(A, B)
-        print(f"Soluția sistemului: x = {x}, y = {y}, z = {z}")
-    except ValueError as e:
-        print(e)
-
+    x, y, z = cramer(A, B)
+    print("CRAMER")
+    print(f"Soluția sistemului: x = {x}, y = {y}, z = {z}")
+    print("\n")
+    
+    print("INVERSA")
+    
+    A_inv = inverse_matrix(A)
+    print("Inversa lui A:")
+    for row in A_inv:
+        print(row)
+        
+    result_vector = matrix_multiplication(A_inv, B)
+    print(f"Soluția sistemului folosind inversa: x = {result_vector[0]}, y = {result_vector[1]}, z = {result_vector[2]}")
