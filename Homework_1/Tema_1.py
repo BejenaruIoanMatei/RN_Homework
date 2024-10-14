@@ -133,6 +133,12 @@ def cramer(A, B):
 if __name__ == "__main__":
     file_path = 'file.txt'
     A, B = parse_equations(file_path)
+    print("matricea: ")
+    for row in A:
+        print(row)
+    print("\n")
+    print("vectorul: ")
+    print(B)
     
     try:
         x, y, z = cramer(A, B)
