@@ -207,16 +207,16 @@ if __name__ == "__main__":
     print(B)
     
     x, y, z = cramer(A, B)
-    print("CRAMER")
+    print("\nCRAMER")
     print(f"Soluția sistemului: x = {x}, y = {y}, z = {z}")
-    print("\n")
+    #print("\n")
     
-    print("INVERSA")
+    print("\nINVERSA")
     
     A_inv = inverse_matrix(A)
-    print("Inversa lui A:")
-    for row in A_inv:
-        print(row)
+    ##print("Inversa lui A:")
+    #for row in A_inv:
+    #    print(row)
         
     result_vector = matrix_multiplication(A_inv, B)
     print(f"Soluția sistemului folosind inversa: x = {result_vector[0]}, y = {result_vector[1]}, z = {result_vector[2]}")
