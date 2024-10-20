@@ -1,0 +1,16 @@
+In dataset ul MNIST sunt imagini alb negru, reprezentand cifrele de la 0 - 9
+            - fiecare imagine este stocata sub forma unei matrice de 28x28 
+            - de exemplu putem avea o imagine cu cifra 9 si noi vrem ca algoritmul sa recunoasca cifra cu acuratete de peste 90%
+
+Ce face perceptronul ?
+    forward propagation
+    - Ia o imagine din setul de antrenament sau testare (o secventa de 784 pixeli)
+    - Aplica o combinatie liniara (pondere + bias) pentru fiecare dintre cele 10 ieșiri (corespunzatoare cifrelor de la 0 la 9)
+    - Aplica functia softmax pentru a transforma scorurile brute intr-o distributie de probabilitate (adica "cat de probabil" este ca imaginea sa fie cifra 0, 1, 2, ...)
+    antrenament
+    - ajustarea ponderilor si a biasurilor pentru ca predictiile sa fie cat mai precise (cu gradient descent)
+
+Deci ce ghicim cu acuratete de peste 90% ?
+
+    - Cifra dintr o imagine 
+    - Daca la inceput alg ghiceste cu 8% dupa antrenament reuseste sa ghiceasca cu 92 % 
