@@ -1,6 +1,11 @@
+## In continuarea temei am modificat codul astfel incat algoritmul sa afiseze eticheta reala (ce numar este in poza)
+#si pe langa asta, predictia modelului 
+
 import ssl
 import numpy as np
 from torchvision.datasets import MNIST
+import matplotlib.pyplot as plt # ce vom folosi pentru afisarea imaginilor
+
 
 ## datasetul cu imagini reprez cifre
 def download_mnist(is_train: bool):
@@ -91,12 +96,29 @@ def predict(X):
 def accuracy(y_true, y_pred):
     return np.mean(y_true == y_pred)
 
+## pentru afisarea imaginii impreuna cu predictie
+def show_image_and_predict(index):
+    image = test_X[index].reshape(28, 28)  
+    true_label = test_Y[index]  
+    prediction = predict(test_X[index:index+1])[0]  
+    
+    # matplotlivb
+    plt.imshow(image, cmap='gray')
+    plt.title(f'Eticheta reala este: {true_label}, Predictia modelului: {prediction}')
+    plt.axis('off')
+    plt.show()
+
+
 initial_predictions = predict(test_X)
 initial_accuracy = accuracy(test_Y, initial_predictions)
 print(f'Initial accuracy: {initial_accuracy * 100:.2f}%')
+
 
 train(train_X, train_Y_one_hot, epochs=100, batch_size=100, learning_rate=0.01)
 
 final_predictions = predict(test_X)
 final_accuracy = accuracy(test_Y, final_predictions)
 print(f'Final accuracy: {final_accuracy * 100:.2f}%')
+
+# imaginea si predictia, trebuie inlocuit indexul manual 
+show_image_and_predict(4)  
